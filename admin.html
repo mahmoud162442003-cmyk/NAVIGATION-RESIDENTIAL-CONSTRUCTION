@@ -41,10 +41,11 @@ async function commit(){
  for(var n=0;n<2;n++){
   var body={message:'Update site content',content:b64(JSON.stringify(site,null,1)),branch:cfg.branch};if(sha)body.sha=sha;
   var r=await api('/contents/content.json',{method:'PUT',body:JSON.stringify(body)});
-  if(r.ok){var j=await r.json();sha=j.content.sha;stat.textContent='Saved. The live site updates in about a minute.';return}
+  if(r.ok){var j=await r.json();sha=j.content.sha;stat.textContent='Applied. Visible on the live site within seconds.';return}
   if(r.status===409||r.status===422){await load();continue}
   stat.textContent=r.status===401||r.status===403?'Not allowed: check the token permissions.':'Could not save (error '+r.status+').';return}
  stat.textContent='Could not save. Please try again.'}
+function saveNow(){stat.textContent='Applying...';clearTimeout(timer);chain=chain.then(commit)}
 function save(){stat.textContent='Saving...';clearTimeout(timer);timer=setTimeout(function(){chain=chain.then(commit)},800)}
 function m(n,g,defs){var a=[];for(var i=0;i<n;i++)defs.forEach(function(d,j){a.push({i:i,g:g.replace('#',i+1),l:d[0],s:d[1],a:d[2],v:d[3][i]})});return a}
 var T={
@@ -101,14 +102,15 @@ function hex(c){var m=c.match(/\d+/g);if(!m)return '#000000';return '#'+m.slice(
 function visual(bd,w){
  w.style.maxWidth='1200px';var sel=null;
  var bar=el('div');bar.style.cssText='display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px;background:#eef1f6;border:1px solid #c9ced6;margin:10px 0;position:sticky;top:0;z-index:5';
- var info=el('div',0,'Click any text on the page below, then edit it here. Language: use the menu at the top.');info.style.cssText='flex:1 1 100%;font-weight:600;font-size:13px';
- var ta=el('textarea');ta.style.cssText='flex:1 1 100%;min-height:54px';ta.disabled=true;ta.placeholder='The selected text appears here';
+ var info=el('div',0,'Click any text below, type the new text, then press Apply (or Enter). Language: use the menu at the top.');info.style.cssText='flex:1 1 100%;font-weight:600;font-size:13px';
+ var ta=el('textarea');ta.style.cssText='flex:1;min-height:54px';ta.disabled=true;ta.placeholder='The selected text appears here';
  var size=el('input');size.type='number';size.min=8;size.max=200;size.placeholder='px';size.style.cssText='width:76px;padding:8px';
  var fam=el('select');fam.style.padding='8px';[['Font: default',''],['Archivo','Archivo,Arial,sans-serif'],['Cairo (Arabic)','Cairo,Tahoma,Arial,sans-serif'],['Georgia (serif)','Georgia,serif'],['Arial','Arial,sans-serif'],['Courier','"Courier New",monospace']].forEach(function(o){var op=el('option',0,o[0]);op.value=o[1];fam.appendChild(op)});
  var col=el('input');col.type='color';col.style.cssText='width:44px;height:38px;padding:2px';
  function btn(t,f){var b=el('button','b o',t);b.style.padding='8px 12px';b.onclick=f;return b}
  var rst=btn('Reset this text',function(){});
- [ta,size,fam,col,btn('B',function(){st('font-weight',sel&&parseInt(getComputedStyle(sel.e).fontWeight)>=700?'400':'800')}),btn('I',function(){st('font-style',sel&&getComputedStyle(sel.e).fontStyle==='italic'?'normal':'italic')}),btn('Left',function(){st('text-align','left')}),btn('Center',function(){st('text-align','center')}),btn('Right',function(){st('text-align','right')}),rst].forEach(function(x){bar.appendChild(x)});
+ var ap=el('button','b','Apply');ap.onclick=saveNow;var trow=el('div');trow.style.cssText='display:flex;gap:8px;flex:1 1 100%';trow.appendChild(ta);trow.appendChild(ap);ta.onkeydown=function(ev){if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();saveNow()}};
+ [trow,size,fam,col,btn('B',function(){st('font-weight',sel&&parseInt(getComputedStyle(sel.e).fontWeight)>=700?'400':'800')}),btn('I',function(){st('font-style',sel&&getComputedStyle(sel.e).fontStyle==='italic'?'normal':'italic')}),btn('Left',function(){st('text-align','left')}),btn('Center',function(){st('text-align','center')}),btn('Right',function(){st('text-align','right')}),rst].forEach(function(x){bar.appendChild(x)});
  bar.insertBefore(info,bar.firstChild);bd.appendChild(bar);
  function ent(){return site.v[sel.key]=site.v[sel.key]||{s:{}}}
  function st(p,v){if(!sel)return;var en=ent();en.s=en.s||{};if(v===''||v==null){sel.e.style.removeProperty(p);delete en.s[p]}else{sel.e.style.setProperty(p,v);en.s[p]=v}save()}
