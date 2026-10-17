@@ -24,6 +24,10 @@
   "#top>div:nth-child(1)>div:nth-child(1)>h1:nth-child(1)#0": {
    "s": {},
    "en": "WE DON'T JUST BUILD STRUCTURES. WE BUILD LEGACIES."
+  },
+  "#c-phone#0": {
+   "s": {},
+   "en": "+90"
   }
  }
 }
