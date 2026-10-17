@@ -16,5 +16,15 @@
   "--hero-img": "photos/hero-img-1792266184879.jpg",
   "--p2-img": "photos/p2-img-1792266194255.jpg",
   "--cta-img": "photos/cta-img-1792266232411.jpg"
+ },
+ "ar": {},
+ "tr": {},
+ "l": {},
+ "v": {
+  "#top>div:nth-child(1)>div:nth-child(1)>h1:nth-child(1)#0": {
+   "s": {
+    "font-family": "Archivo,Arial,sans-serif"
+   }
+  }
  }
 }
