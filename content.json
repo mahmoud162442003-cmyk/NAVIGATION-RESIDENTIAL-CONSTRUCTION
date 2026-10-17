@@ -3,7 +3,8 @@
   "footer .w>div:first-child p|undefined": "Building strong foundations for the F.\n",
   ".hero h1|undefined": "WE DON'T JUST BUILD STRUCTURES. WE BUILD LEGACIES.",
   "#c-phone|undefined": "+905514768938",
-  "#c-email|undefined": "mahmoud162442003@gmail.com"
+  "#c-email|undefined": "mahmoud162442003@gmail.com",
+  ".bar b|1": "1+"
  },
  "c": {
   "--gold": "#cea12b"
