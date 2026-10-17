@@ -1,6 +1,7 @@
 {
  "t": {
-  "footer .w>div:first-child p|undefined": "Building strong foundations for the F.\n"
+  "footer .w>div:first-child p|undefined": "Building strong foundations for the F.\n",
+  ".hero h1|undefined": " -4.jpg"
  },
  "c": {
   "--gold": "#cea12b"
