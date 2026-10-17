@@ -1,7 +1,8 @@
 {
  "t": {
   "footer .w>div:first-child p|undefined": "Building strong foundations for the F.\n",
-  ".hero h1|undefined": "WE DON'T JUST BUILD STRUCTURES. WE BUILD LEGACIES."
+  ".hero h1|undefined": "WE DON'T JUST BUILD STRUCTURES. WE BUILD LEGACIES.",
+  "#c-phone|undefined": "+90"
  },
  "c": {
   "--gold": "#cea12b"
