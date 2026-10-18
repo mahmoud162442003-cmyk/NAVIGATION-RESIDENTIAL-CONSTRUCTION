@@ -46,7 +46,7 @@ async function commit(){
   stat.textContent=r.status===401||r.status===403?'Not allowed: check the token permissions.':'Could not save (error '+r.status+').';return}
  stat.textContent='Could not save. Please try again.'}
 function saveNow(){stat.textContent='Applying...';clearTimeout(timer);chain=chain.then(commit)}
-function save(){stat.textContent='Saving...';clearTimeout(timer);timer=setTimeout(function(){chain=chain.then(commit)},800)}
+function save(){stat.textContent='Saving...';clearTimeout(timer);timer=setTimeout(function(){chain=chain.then(commit)},350)}
 function m(n,g,defs){var a=[];for(var i=0;i<n;i++)defs.forEach(function(d,j){a.push({i:i,g:g.replace('#',i+1),l:d[0],s:d[1],a:d[2],v:d[3][i]})});return a}
 var T={
 'Home':[{l:'Main headline',s:'.hero h1',v:'Building Strong Foundations for the Future'},{l:'Intro text',s:'.hero p',a:1,v:'Residential construction you can trust: quality craftsmanship, honest pricing, and homes finished on schedule.'},{l:'Quote section headline',s:'.cta h2',v:'Planning a Construction Project?'},{l:'Quote section text',s:'.cta p',a:1,v:'Tell us about your build and we will send a clear, no-obligation quote.'},{l:'Footer tagline',s:'footer .w>div:first-child p',a:1,v:'Building strong foundations for the future.'},{l:'Contact email',s:'#c-email',v:'info@example.com'},{l:'Contact phone',s:'#c-phone',v:'+00 000 000 0000'}],
@@ -103,8 +103,13 @@ function neutral(x,f){return !/[A-Za-z\u00C0-\u024F\u0600-\u06FF]/.test(x)||x.in
 function worth(x,f){return auto&&!!x}
 function dec(s){var q=document.createElement('textarea');q.innerHTML=s;return q.value}
 function chunks(x){var s=x.match(/[^.!?\u061F]+[.!?\u061F]*\s*/g)||[x],out=[],cu='';s.forEach(function(y){if((cu+y).length>420&&cu){out.push(cu.trim());cu=y}else cu+=y});if(cu.trim())out.push(cu.trim());return out}
-async function tr(text,from,to){var out=[],cs=chunks(text);for(var i=0;i<cs.length;i++){var r=await fetch('https://api.mymemory.translated.net/get?q='+encodeURIComponent(cs[i])+'&langpair='+from+'|'+to),j=await r.json(),x=j&&j.responseData&&j.responseData.translatedText;if(!x||+j.responseStatus!==200)throw new Error('tr');out.push(dec(x))}return out.join(' ')}
-async function propagate(text,from,setFn,f){var others=['en','ar','tr'].filter(function(l){return l!==from});if(neutral(text,f)){others.forEach(function(l){setFn(l,text)});stat.textContent='Applied to all languages';return}stat.textContent='Translating...';try{for(var i=0;i<others.length;i++)setFn(others[i],await tr(text,from,others[i]));stat.textContent='Translated into the other two languages'}catch(e){stat.textContent='Translation service unavailable. Type the other languages by hand.'}}
+var tcache={};try{tcache=JSON.parse(localStorage.getItem('nrc-tc')||'{}')}catch(e){}
+function gt(c,from,to){return fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl='+from+'&tl='+to+'&dt=t&q='+encodeURIComponent(c)).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){var o='';(j[0]||[]).forEach(function(p){o+=p[0]||''});if(!o)throw 0;return o})}
+function mm(c,from,to){return fetch('https://api.mymemory.translated.net/get?q='+encodeURIComponent(c)+'&langpair='+from+'|'+to).then(function(r){return r.json()}).then(function(j){var x=j&&j.responseData&&j.responseData.translatedText;if(!x||+j.responseStatus!==200)throw 0;return dec(x)})}
+function anyOf(ps){return new Promise(function(res,rej){var n=ps.length,done=false;ps.forEach(function(p){p.then(function(v){if(!done){done=true;res(v)}},function(){if(--n===0&&!done)rej(new Error('tr'))})})})}
+async function tr1(c,from,to){var k=from+to+'|'+c;if(tcache[k])return tcache[k];var v=await anyOf([gt(c,from,to),mm(c,from,to)]);tcache[k]=v;try{localStorage.setItem('nrc-tc',JSON.stringify(tcache))}catch(e){}return v}
+async function tr(text,from,to){var cs=chunks(text),out=await Promise.all(cs.map(function(c){return tr1(c,from,to)}));return out.join(' ')}
+async function propagate(text,from,setFn,f){var others=['en','ar','tr'].filter(function(l){return l!==from});if(neutral(text,f)){others.forEach(function(l){setFn(l,text)});stat.textContent='Applied to all languages';return}stat.textContent='Translating...';try{var res=await Promise.all(others.map(function(l){return tr(text,from,l).catch(function(){return tr(text,from,l)})}));others.forEach(function(l,i){setFn(l,res[i])});stat.textContent='Translated into the other two languages'}catch(e){stat.textContent='Translation service busy. Press Apply again to retry.'}}
 async function syncAll(btn){btn.disabled=true;stat.textContent='Syncing all languages...';var L=['en','ar','tr'];
  try{var keys={};L.forEach(function(l){Object.keys(stores(l)).forEach(function(k){keys[k]=1})});
   var ks=Object.keys(keys);for(var i=0;i<ks.length;i++){var k=ks[i],src=L.filter(function(l){return stores(l)[k]})[0];if(!src)continue;var txt=stores(src)[k],f={s:k.slice(0,k.lastIndexOf('|'))};
@@ -113,12 +118,12 @@ async function syncAll(btn){btn.disabled=true;stat.textContent='Syncing all lang
    for(var b=0;b<3;b++){var l2=L[b];if(l2===sl||en[l2]!=null)continue;en[l2]=neutral(en[sl],null)?en[sl]:await tr(en[sl],sl,l2)}}
   save();stat.textContent='All languages synced'}catch(e){stat.textContent='Translation service unavailable. Try again later.'}
  btn.disabled=false}
-function schedTr(key,f,text,from){clearTimeout(trt[key]);if(!worth(text,f))return;trt[key]=setTimeout(function(){propagate(text,from,function(l,v){stores(l)[key]=v},f).then(function(){save()})},1200)}
+function schedTr(key,f,text,from){clearTimeout(trt[key]);if(!worth(text,f))return;trt[key]=setTimeout(function(){propagate(text,from,function(l,v){stores(l)[key]=v},f).then(function(){saveNow()})},450)}
 function pathOf(e,doc){var p=[],b=doc.body;while(e&&e!==b){if(e.id){p.unshift('#'+e.id);return p.join('>')}var i=1,x=e;while((x=x.previousElementSibling))i++;p.unshift(e.tagName.toLowerCase()+':nth-child('+i+')');e=e.parentElement}p.unshift('body');return p.join('>')}
 function applyV(doc,l){var v=site.v||{};Object.keys(v).forEach(function(k){var j=k.lastIndexOf('#'),e=null;try{e=doc.querySelector(k.slice(0,j))}catch(x){}if(!e)return;var en=v[k],n=e.childNodes[+k.slice(j+1)];if(en[l]!=null&&n&&n.nodeType===3)n.nodeValue=en[l];var s=en.s||{};Object.keys(s).forEach(function(q){e.style.setProperty(q,s[q])})})}
 function hex(c){var m=c.match(/\d+/g);if(!m)return '#000000';return '#'+m.slice(0,3).map(function(x){return ('0'+(+x).toString(16)).slice(-2)}).join('')}
 function visual(bd,w){
- w.style.maxWidth='1200px';var sel=null,vt=null;function doVisual(then){if(!sel||!worth(ta.value,null)){if(then)then();return}var key=sel.key,text=ta.value;propagate(text,lang,function(l,v){var en=site.v[key]=site.v[key]||{s:{}};en[l]=v}).then(function(){save();if(then)then()})}
+ w.style.maxWidth='1200px';var sel=null,vt=null;function doVisual(then){if(!sel||!worth(ta.value,null)){if(then)then();return}var key=sel.key,text=ta.value;propagate(text,lang,function(l,v){var en=site.v[key]=site.v[key]||{s:{}};en[l]=v}).then(function(){if(then)then();else saveNow()})}
  var bar=el('div');bar.style.cssText='display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px;background:#eef1f6;border:1px solid #c9ced6;margin:10px 0;position:sticky;top:0;z-index:5';
  var info=el('div',0,'Click any text below, type the new text, then press Apply (or Enter). Language: use the menu at the top.');info.style.cssText='flex:1 1 100%;font-weight:600;font-size:13px';
  var ta=el('textarea');ta.style.cssText='flex:1;min-height:54px';ta.disabled=true;ta.placeholder='The selected text appears here';
@@ -132,7 +137,7 @@ function visual(bd,w){
  bar.insertBefore(info,bar.firstChild);bd.appendChild(bar);
  function ent(){return site.v[sel.key]=site.v[sel.key]||{s:{}}}
  function st(p,v){if(!sel)return;var en=ent();en.s=en.s||{};if(v===''||v==null){sel.e.style.removeProperty(p);delete en.s[p]}else{sel.e.style.setProperty(p,v);en.s[p]=v}save()}
- ta.oninput=function(){if(!sel)return;sel.e.childNodes[sel.ni].nodeValue=ta.value;ent()[lang]=ta.value;save();clearTimeout(vt);vt=setTimeout(doVisual,1200)};
+ ta.oninput=function(){if(!sel)return;sel.e.childNodes[sel.ni].nodeValue=ta.value;ent()[lang]=ta.value;save();clearTimeout(vt);vt=setTimeout(doVisual,450)};
  size.oninput=function(){st('font-size',size.value?size.value+'px':'')};
  fam.onchange=function(){st('font-family',fam.value)};
  col.oninput=function(){st('color',col.value)};
