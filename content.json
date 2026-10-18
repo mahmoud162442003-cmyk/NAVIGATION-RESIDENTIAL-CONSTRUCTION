@@ -18,8 +18,20 @@
   "--cta-img": "photos/cta-img-1792266232411.jpg",
   "--p3-img": "photos/p3-img-1792271995246.jpg"
  },
- "ar": {},
- "tr": {},
+ "ar": {
+  "footer .w>div:first-child p|undefined": "بناء أسس قوية للمؤسسة",
+  ".hero h1|undefined": "نحن لا نبني الهياكل فقط. نحن نبني الموروثات.",
+  "#c-phone|undefined": "+905514768938",
+  "#c-email|undefined": "mahmoud162442003@gmail.com",
+  ".bar b|1": "180+"
+ },
+ "tr": {
+  "footer .w>div:first-child p|undefined": "F için güçlü temeller oluşturmak",
+  ".hero h1|undefined": "SADECE YAPILAR İNŞA ETMİYORUZ. MİRASLAR İNŞA EDİYORUZ.",
+  "#c-phone|undefined": "+905514768938",
+  "#c-email|undefined": "mahmoud162442003@gmail.com",
+  ".bar b|1": "180+"
+ },
  "l": {},
  "v": {
   "#top>div:nth-child(1)>div:nth-child(1)>h1:nth-child(1)#0": {
@@ -30,15 +42,21 @@
   },
   "#c-phone#0": {
    "s": {},
-   "en": "+90 551 476 89 38"
+   "en": "+90 551 476 89 38",
+   "ar": "+90 551 476 89 38",
+   "tr": "+90 551 476 89 38"
   },
   "#c-email#0": {
    "s": {},
-   "en": "mahmoud162442003@gmail.com"
+   "en": "mahmoud162442003@gmail.com",
+   "ar": "mahmoud162442003@gmail.com",
+   "tr": "mahmoud162442003@gmail.com"
   },
   "body>div:nth-child(3)>div:nth-child(1)>div:nth-child(1)>b:nth-child(1)#0": {
    "s": {},
-   "en": "17+"
+   "en": "17+",
+   "ar": "17+",
+   "tr": "17+"
   }
  }
 }
