@@ -61,8 +61,8 @@
   "body>div:nth-child(3)>div:nth-child(1)>div:nth-child(2)>b:nth-child(1)#0": {
    "s": {},
    "en": "300+",
-   "ar": "00+",
-   "tr": "00+"
+   "ar": "300+",
+   "tr": "300+"
   }
  }
 }
