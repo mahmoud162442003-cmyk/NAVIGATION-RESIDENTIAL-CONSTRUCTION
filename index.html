@@ -147,7 +147,8 @@ start();
 function getContent(){var m=location.hostname.match(/^(.+)\.github\.io$/),parts=location.pathname.split('/').filter(Boolean);
  var fb=function(){return fetch('content.json?v='+Date.now()).then(function(r){return r.ok?r.json():null})};
  if(!m||!parts[0]||parts[0].indexOf('.')>-1)return fb();
- return fetch('https://api.github.com/repos/'+m[1]+'/'+parts[0]+'/contents/content.json',{cache:'no-cache',headers:{Accept:'application/vnd.github.raw+json'}}).then(function(r){if(!r.ok)throw 0;return r.json()}).catch(fb)}
+ var raw='https://raw.githubusercontent.com/'+m[1]+'/'+parts[0]+'/HEAD/content.json?t='+Date.now();
+ return fetch(raw,{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).catch(function(){return fetch('https://api.github.com/repos/'+m[1]+'/'+parts[0]+'/contents/content.json',{cache:'no-cache',headers:{Accept:'application/vnd.github.raw+json'}}).then(function(r){if(!r.ok)throw 0;return r.json()})}).catch(fb)}
 getContent().then(function(x){
  if(!x)return;d.t=x.t||{};d.v=x.v||{};d.ar=x.ar||{};d.tr=x.tr||{};['wa','ig','yt','tg'].forEach(function(k){var a=document.getElementById('ch-'+k);if(a&&x.l&&x.l[k])a.href=x.l[k]});
  Object.keys(x.c||{}).forEach(function(k){R.style.setProperty(k,x.c[k])});
