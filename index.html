@@ -131,6 +131,16 @@ function nodeOf(k){var j=k.lastIndexOf('|'),sel=k.slice(0,j);return {sel:sel,e:d
 function put(k,v){var n=nodeOf(k);if(!n.e)return;if(n.sel==='.tile>div')n.e.childNodes[0].nodeValue=v;else n.e.textContent=v;if(n.sel==='#c-email'){var b=document.querySelector('.cta a.btn');if(b)b.href='mailto:'+v}}
 function cur(k){var n=nodeOf(k);if(!n.e)return null;return n.sel==='.tile>div'?n.e.childNodes[0].nodeValue:n.e.textContent}
 Object.keys(G).concat(['#c-email|0','#c-phone|0']).forEach(function(k){var v=cur(k);if(v!=null)EN[k]=v});
+var TC={};try{TC=JSON.parse(localStorage.getItem('nrc-tx')||'{}')}catch(e){}
+var NZ=/[A-Za-z\u00C0-\u024F\u0600-\u06FF]/;
+function gtr(t,f,to){var ck=f+to+'|'+t;if(TC[ck])return Promise.resolve(TC[ck]);return fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl='+f+'&tl='+to+'&dt=t&q='+encodeURIComponent(t)).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){var o='';(j[0]||[]).forEach(function(p){o+=p[0]||''});if(!o)throw 0;TC[ck]=o;try{localStorage.setItem('nrc-tx',JSON.stringify(TC))}catch(e){}return o})}
+function store(l){return l==='en'?d.t:(d[l]||{})}
+function fillMissing(l){
+ var seen={};['en','ar','tr'].forEach(function(x){Object.keys(store(x)).forEach(function(k){seen[k]=1})});
+ Object.keys(seen).forEach(function(k){if(store(l)[k]!=null)return;var sl=['en','ar','tr'].filter(function(x){return store(x)[k]!=null})[0];if(!sl)return;var txt=store(sl)[k];if(!NZ.test(txt))return;
+  gtr(txt,sl,l).then(function(v){if(lang===l)put(k,v)}).catch(function(){})});
+ Object.keys(d.v||{}).forEach(function(vk){var en=d.v[vk];if(en[l]!=null)return;var sl=['en','ar','tr'].filter(function(x){return en[x]})[0];if(!sl||!NZ.test(en[sl]))return;
+  gtr(en[sl],sl,l).then(function(val){if(lang!==l)return;var j=vk.lastIndexOf('#'),e=null;try{e=document.querySelector(vk.slice(0,j))}catch(x){}var n=e&&e.childNodes[+vk.slice(j+1)];if(n&&n.nodeType===3)n.nodeValue=val}).catch(function(){})})}
 function setLang(l){
  lang=l;R.lang=l;R.dir=l==='ar'?'rtl':'ltr';try{localStorage.setItem('nrc-lang',l)}catch(e){}
  var keys={};[G,EN,d.t,d[l]||{}].forEach(function(o){Object.keys(o).forEach(function(k){keys[k]=1})});
@@ -139,7 +149,7 @@ function setLang(l){
   if(l==='en')v=d.t[k]!=null?d.t[k]:(nz?ov:EN[k]);
   else{var tv=d.t[k];v=(d[l]&&d[l][k]!=null)?d[l][k]:nz?ov:(G[k]&&G[k][l]!=null)?G[k][l]:(tv!=null?tv:EN[k])}
   if(v!=null)put(k,v)});
- applyV(l);
+ applyV(l);fillMissing(l);
  Array.prototype.forEach.call(document.querySelectorAll('.lang button'),function(b){b.classList.toggle('on',b.getAttribute('data-l')===l)});
 }
 Array.prototype.forEach.call(document.querySelectorAll('.lang button'),function(b){b.onclick=function(){setLang(b.getAttribute('data-l'))}});
