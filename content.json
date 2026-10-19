@@ -63,6 +63,11 @@
    "en": "200+",
    "ar": "200+",
    "tr": "200+"
+  },
+  "body>header:nth-child(1)>div:nth-child(1)>button:nth-child(5)>span:nth-child(1)#0": {
+   "s": {
+    "font-size": "13px"
+   }
   }
  }
 }
