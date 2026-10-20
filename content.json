@@ -113,6 +113,14 @@
     "ar": "اتصل بنا",
     "tr": "İletişim"
    }
+  },
+  {
+   "h": "#contact",
+   "t": {
+    "en": "New link",
+    "ar": "رابط جديد",
+    "tr": "Yeni bağlantı"
+   }
   }
  ]
 }
