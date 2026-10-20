@@ -5,7 +5,7 @@
   "#c-phone|undefined": "+905514768938",
   "#c-email|undefined": "mahmoud162442003@gmail.com",
   ".bar b|1": "180+",
-  ".mqsrc|undefined": "NAVIGATION RESIDENTIAL CONSTRUCTIO"
+  ".mqsrc|undefined": "NAVIGATION RES"
  },
  "c": {
   "--gold": "#cea12b"
@@ -24,14 +24,16 @@
   ".hero h1|undefined": "نحن لا نبني الهياكل فقط. نحن نبني الموروثات.",
   "#c-phone|undefined": "+905514768938",
   "#c-email|undefined": "mahmoud162442003@gmail.com",
-  ".bar b|1": "180+"
+  ".bar b|1": "180+",
+  ".mqsrc|undefined": "NAVIGATION RESIDENTIAL CONSTRUCTIO"
  },
  "tr": {
   "footer .w>div:first-child p|undefined": "F için güçlü temeller oluşturmak",
   ".hero h1|undefined": "SADECE YAPILAR İNŞA ETMİYORUZ. MİRASLAR İNŞA EDİYORUZ.",
   "#c-phone|undefined": "+905514768938",
   "#c-email|undefined": "mahmoud162442003@gmail.com",
-  ".bar b|1": "180+"
+  ".bar b|1": "180+",
+  ".mqsrc|undefined": "NAVIGATION RESIDENTIAL CONSTRUCTIO"
  },
  "l": {},
  "v": {
