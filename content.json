@@ -4,7 +4,8 @@
   ".hero h1|undefined": "WE DON'T JUST BUILD STRUCTURES. WE BUILD LEGACIES.",
   "#c-phone|undefined": "+905514768938",
   "#c-email|undefined": "mahmoud162442003@gmail.com",
-  ".bar b|1": "180+"
+  ".bar b|1": "180+",
+  ".mqsrc|undefined": "NAVIGATION RESIDENTIAL CONSTRUCTIO"
  },
  "c": {
   "--gold": "#cea12b"
@@ -70,5 +71,46 @@
    }
   }
  },
- "n": null
+ "n": [
+  {
+   "h": "#services",
+   "t": {
+    "en": "Services",
+    "ar": "خدماتنا",
+    "tr": "Hizmetler"
+   }
+  },
+  {
+   "h": "#projects",
+   "t": {
+    "en": "Projects",
+    "ar": "مشاريعنا",
+    "tr": "Projeler"
+   }
+  },
+  {
+   "h": "#why",
+   "t": {
+    "en": "About Us",
+    "ar": "من نحن",
+    "tr": "Hakkımızda"
+   }
+  },
+  {
+   "h": "#reviews",
+   "t": {
+    "en": "Reviews",
+    "ar": "آراء العملاء",
+    "tr": "Yorumlar"
+   }
+  },
+  {
+   "h": "#contact",
+   "t": {
+    "en": "Contact",
+    "ar": "اتصل بنا",
+    "tr": "İletişim"
+   }
+  }
+ ]
 }
