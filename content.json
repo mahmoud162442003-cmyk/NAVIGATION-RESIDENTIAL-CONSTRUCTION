@@ -131,5 +131,52 @@
    }
   }
  ],
- "mq": {}
+ "mq": {
+  "enabled": true,
+  "sidebar": true,
+  "words": [
+   "NAVIGATION",
+   "RESIDENTIAL",
+   "CONSTRUCTION"
+  ],
+  "dir": "up",
+  "rot": "cw",
+  "family": "default",
+  "weight": 900,
+  "opacity": 23,
+  "color": "#FFFFFF",
+  "bg": "#203ED5",
+  "sepOn": true,
+  "sepStyle": "circle",
+  "sepSymbol": "•",
+  "sepColor": "",
+  "pauseHover": false,
+  "desktop": {
+   "width": 320,
+   "size": 160,
+   "speed": 30,
+   "ls": 3,
+   "ws": 0,
+   "dot": 0.22,
+   "gap": 0.5
+  },
+  "tablet": {
+   "width": 200,
+   "size": 100,
+   "speed": 30,
+   "ls": 3,
+   "ws": 0,
+   "dot": 0.22,
+   "gap": 0.5
+  },
+  "mobile": {
+   "width": 84,
+   "size": 52,
+   "speed": 30,
+   "ls": 2,
+   "ws": 0,
+   "dot": 0.22,
+   "gap": 0.5
+  }
+ }
 }
