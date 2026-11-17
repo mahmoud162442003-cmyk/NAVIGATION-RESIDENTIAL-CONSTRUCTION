@@ -181,5 +181,65 @@
  },
  "hero": null,
  "typo": null,
- "logo": null
+ "logo": {
+  "src": "",
+  "auto": true,
+  "visible": true,
+  "d": {
+   "desktop": {
+    "wMode": "pct",
+    "wVal": 65,
+    "scale": 100,
+    "max": 480,
+    "keep": true,
+    "h": 0,
+    "offX": 2,
+    "offY": 0,
+    "mt": 30,
+    "mb": 40,
+    "pt": 5,
+    "pr": 12,
+    "pb": 5,
+    "pl": 9,
+    "bg": "#FFFFFF",
+    "bgA": 100
+   },
+   "tablet": {
+    "wMode": "pct",
+    "wVal": 65,
+    "scale": 100,
+    "max": 360,
+    "keep": true,
+    "h": 0,
+    "offX": 0,
+    "offY": 0,
+    "mt": 16,
+    "mb": 12,
+    "pt": 0,
+    "pr": 0,
+    "pb": 0,
+    "pl": 0,
+    "bg": "#FFFFFF",
+    "bgA": 100
+   },
+   "mobile": {
+    "wMode": "pct",
+    "wVal": 65,
+    "scale": 100,
+    "max": 240,
+    "keep": true,
+    "h": 0,
+    "offX": 0,
+    "offY": 0,
+    "mt": 12,
+    "mb": 10,
+    "pt": 0,
+    "pr": 0,
+    "pb": 0,
+    "pl": 0,
+    "bg": "#FFFFFF",
+    "bgA": 100
+   }
+  }
+ }
 }
