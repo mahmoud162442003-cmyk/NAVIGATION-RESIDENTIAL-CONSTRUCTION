@@ -178,5 +178,8 @@
    "dot": 0.22,
    "gap": 0.5
   }
- }
+ },
+ "hero": null,
+ "typo": null,
+ "logo": null
 }
