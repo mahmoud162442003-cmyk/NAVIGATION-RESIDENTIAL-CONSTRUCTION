@@ -154,7 +154,7 @@
   "desktop": {
    "width": 320,
    "size": 297,
-   "speed": 30,
+   "speed": 90,
    "ls": 3,
    "ws": 0,
    "dot": 0.22,
